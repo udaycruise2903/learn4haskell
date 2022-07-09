@@ -136,43 +136,43 @@ functions in GHCi and insert the corresponding resulting output below:
 
 List of booleans:
 >>> :t [True, False]
-
+[True, False] :: [Bool]
 
 String is a list of characters:
 >>> :t "some string"
-
+"some string" :: [Char]
 
 Empty list:
 >>> :t []
-
+[] :: [a]
 
 Append two lists:
 >>> :t (++)
-
+(++) :: [a] -> [a] -> [a]
 
 Prepend an element at the beginning of a list:
 >>> :t (:)
-
+(:) :: a -> [a] -> [a]
 
 Reverse a list:
 >>> :t reverse
-
+reverse :: [a] -> [a]
 
 Take first N elements of a list:
 >>> :t take
-
+take :: Int -> [a] -> [a]
 
 Create a list from N same elements:
 >>> :t replicate
-
+replicate :: Int -> a -> [a]
 
 Split a string by line breaks:
 >>> :t lines
-
+lines :: String -> [String]
 
 Join a list of strings with line breaks:
 >>> :t unlines
-
+unlines :: [String] -> String
 
 -}
 
@@ -186,31 +186,43 @@ Evaluate the following expressions in GHCi and insert the answers. Try
 to guess first, what you will see.
 
 >>> [10, 2] ++ [3, 1, 5]
+[10,2,3,1,5]
 
 >>> [] ++ [1, 4]  -- [] is an empty list
+[1,4]
 
 >>> 3 : [1, 2]
+[3,1,2]
 
 >>> 4 : 2 : [5, 10]  -- prepend multiple elements
+[4,2,5,10]
 
 >>> [1 .. 10]  -- list ranges
+[1,2,3,4,5,6,7,8,9,10]
 
 >>> [10 .. 1]
+[]
 
 >>> [10, 9 .. 1]  -- backwards list with explicit step
+[10,9,8,7,6,5,4,3,2,1]
 
 >>> length [4, 10, 5]  -- list length
+3
 
 >>> replicate 5 True
+[True,True,True,True,True]
 
 >>> take 5 "Hello, World!"
+"Hello"
 
 >>> drop 5 "Hello, World!"
+", World!"
 
 >>> zip "abc" [1, 2, 3]  -- convert two lists to a single list of pairs
+[('a',1),('b',2),('c',3)]
 
 >>> words "Hello   Haskell     World!"  -- split the string into the list of words
-
+["Hello","Haskell","World!"]
 
 
 👩‍🔬 Haskell has a lot of syntax sugar. In the case with lists, any
@@ -325,7 +337,7 @@ Remember that each function returns a new list.
 []
 
 ♫ NOTE: When implementing, think about various corner cases. You
-  should return an empty list when given numbers that are negative.
+should return an empty list when given numbers that are negative.
 
 And also don't forget to check the 'Data.List' module. It is full of
 yummy functions.
@@ -336,12 +348,13 @@ from it!
 ghci> :l src/Chapter2.hs
 -}
 subList :: Int -> Int -> [a] -> [a]
-subList = error "subList: Not implemented!"
+subList _ 0 []= []
+subList a n [] = 
 
 {- |
 =⚔️= Task 4
 
-Implement a function that returns only the first half of a given list.
+
 
 >>> firstHalf [3, 4, 1, 2]
 [3,4]
@@ -406,7 +419,6 @@ always matches (the same as a variable), but we don't use its value.
   thing to keep in mind, especially when you have overlapping patterns.
   Also note that, if no pattern matches the value, the function fails
   at runtime.
-
 
 In addition to pattern matching in the function definition, you can
 also use the __case-of__ expression. With case-of, you specify the
@@ -501,7 +513,9 @@ True
 >>> isThird42 [42, 42, 0, 42]
 False
 -}
-isThird42 = error "isThird42: Not implemented!"
+isThird42 :: [a] -> Bool
+isThird42 [] = False
+isThird42 [m:n:_] = False
 
 
 {- |
@@ -650,6 +664,7 @@ the same way as any other values and expressions:
  ✲ You can compose functions easily to create new functions
  ✲ You can have lists of functions
  ✲ And much more!
+
 
 The ability to create __lambdas__ (or anonymous functions) nicely
 complements the concept of HOF. For example, we can easily add
